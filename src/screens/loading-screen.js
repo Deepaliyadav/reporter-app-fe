@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, StyleSheet, Image, Dimensions, ActivityIndicator, Text } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
@@ -9,8 +10,12 @@ const LoadingScreen = () => {
     useEffect(() => {
     setTimeout(() => {
       // Check if user is authenticated
-      const isAuthenticated = false;
-      navigation.replace(isAuthenticated ? 'Main' : 'Auth');
+      const checkLogin = async () => {
+        const user = await AsyncStorage.getItem('user');
+        const isAuthenticated = !!user;
+        navigation.replace(isAuthenticated ? 'Main' : 'Auth');
+      };
+      checkLogin();
     }, 4000);
   }, [navigation]);
 
@@ -36,14 +41,14 @@ const styles = StyleSheet.create({
     // borderColor: 'black',
     // borderWidth: 1,
     // flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   welcomeText: {
     textAlign: 'center',
     fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 });
 export default LoadingScreen;
 
