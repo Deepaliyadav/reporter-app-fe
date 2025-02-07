@@ -2,8 +2,12 @@ import React from 'react';
 import { Field, Form } from 'react-final-form';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { MultiLineInputField } from '../../components/form-fields';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
+
   const onSubmit = (values) => {
     console.log('Form Submitted!', values);
 };
@@ -15,6 +19,14 @@ const validate = values => {
     }
     return errors;
 };
+
+const onLogout = async () => {
+  await AsyncStorage.removeItem('user');
+  setTimeout(() => {
+      navigation.replace('Auth');
+  }, 100);
+};
+
   return (
     <View style={styles.container}>
        <Form
@@ -28,7 +40,10 @@ const validate = values => {
                     <Button title="Punch" onPress={handleSubmit} />
                 </View>
             )}
-            />
+        />
+        <View>
+          <Button title="Logout" onPress={onLogout} />
+        </View>
     </View>
   );
 };
