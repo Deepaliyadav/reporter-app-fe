@@ -1,14 +1,14 @@
 import React from 'react';
 import { Field, Form } from 'react-final-form';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, Text, StyleSheet, Button, Alert } from 'react-native';
+import { View, Text, Alert, ActivityIndicator, TouchableOpacity, useWindowDimensions, Image, TextInput, SafeAreaView } from 'react-native';
 
-import { InputField, NumberInputField, PasswordInputField } from '../../components/form-fields';
 import { useNavigation } from '@react-navigation/native';
 import { useMutation } from '@tanstack/react-query';
+import { loginStyles } from './login-styles'; // Import the styles
 
 const LoginScreen = () => {
     const navigation = useNavigation();
+    const { width, height } = useWindowDimensions(); // Responsive width & height
 
     const sendOtp = async (values) => {
         let data = {
@@ -16,24 +16,20 @@ const LoginScreen = () => {
             phone: values.mobile,
             cus_id: 1234,
         };
-        console.log({ data });
-        // const response = await axios.post('https://k19w0lom7j.execute-api.ap-south-1.amazonaws.com/dev/otp/send-otp', data);
         const response = await fetch('https://k19w0lom7j.execute-api.ap-south-1.amazonaws.com/dev/otp/send-otp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
-          });
-          const result = await response.json();
-          console.log({ result });
-        return response.data; // Ensure the response is returned
+        });
+        const result = await response.json();
+        return { ...result, mobile: values.mobile };
     };
 
     const mutation = useMutation({
         mutationFn: sendOtp,
         onSuccess: async (userData) => {
-            console.log('Success:', userData);
             if (userData?.status) {
-                navigation.replace('OTP');
+                navigation.replace('OTP', { mobile: userData.mobile });
             }
         },
         onError: (error) => {
@@ -50,27 +46,57 @@ const LoginScreen = () => {
         return errors;
     };
 
-  return (
-    <View style={styles.container}>
-         <Form
-            onSubmit={(values) => mutation.mutate(values)}
-            validate={validate}
-            render={({ handleSubmit, values, submitting }) => (
-                <View style={{ padding: 20 }}>
-                    <Text style={styles.text}>Login</Text>
-                    <Field name="mobile" component={NumberInputField} label="Mobile:" placeholder="Enter Number" />
-                    {/* <Field name="password" component={PasswordInputField} label="Password:" placeholder="Enter password" /> */}
-                    <Button title="Login" disabled={submitting} onPress={handleSubmit} />
-                </View>
-            )}
+    return (
+        <SafeAreaView style={[loginStyles.container, { height }]}>
+            <Image 
+                source={require('../../assets/login-img.jpg')} 
+                style={[loginStyles.image, { width, height: height * 0.6 }]} 
+                resizeMode="contain"
             />
-    </View>
-  );
+            <View style={[loginStyles.bottomView, { height: height * 0.4 }]}>
+                <Form
+                    onSubmit={(values) => mutation.mutate(values)}
+                    validate={validate}
+                    render={({ handleSubmit }) => (
+                        <View>
+                            <Text style={[loginStyles.text]}>Enter your phone number</Text>
+                            <Text style={[loginStyles.subText]}>
+                                You will receive a 6-digit code for phone number verification
+                            </Text>
+                            <Field name="mobile" component={NumberInputField} placeholder="Phone number" />
+                            <TouchableOpacity
+                                style={[loginStyles.button, { width: width * 0.9 }]}
+                                disabled={mutation.isLoading}
+                                onPress={handleSubmit}
+                            >
+                                {mutation.isPending ? (
+                                    <ActivityIndicator size="small" color="#fff" />
+                                ) : (
+                                    <Text style={[loginStyles.buttonText]}>Continue</Text>
+                                )}
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                />
+            </View>
+        </SafeAreaView>
+    );
 };
 
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center' },
-  text: { fontSize: 20, fontWeight: 'bold', textAlign: 'center' },
-});
+const NumberInputField = ({ input, meta, label, ...rest }) => (
+    <View style={{ marginBottom: 10 }}>
+        <Text style={{ marginBottom: 10, fontSize: 17, fontWeight: 'bold' }}>{label}</Text>
+        <TextInput
+            keyboardType="number"
+            {...input}
+            {...rest}
+            style={[
+                loginStyles.loginInput, 
+                { borderColor: meta.touched && meta.error ? 'red' : '#ccc', fontSize: 16 }
+            ]}
+        />
+        {meta.touched && meta.error && <Text style={{ color: 'red' }}>{meta.error}</Text>}
+    </View>
+);
 
 export default LoginScreen;

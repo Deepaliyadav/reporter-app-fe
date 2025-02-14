@@ -3,7 +3,6 @@ import { View, Text, TextInput } from 'react-native';
 
 const InputField = ({ input, meta, label, ...rest }) => (
     <View style={{ marginBottom: 10 }}>
-      <Text>{label}</Text>
       <TextInput
         {...input}
         {...rest}
