@@ -41,7 +41,7 @@ const LoginScreen = () => {
     const validate = values => {
         const errors = {};
         if (!values.mobile) {
-            errors.mobile = 'UserName is required';
+            errors.mobile = 'Phone no is required';
         }
         return errors;
     };

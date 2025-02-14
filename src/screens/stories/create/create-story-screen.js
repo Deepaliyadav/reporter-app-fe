@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ActivityIndicator, Alert, Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Field, Form } from 'react-final-form';
 import { useMutation } from '@tanstack/react-query';
-import { Image, Video } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
 
 import { GoBackHeader } from '../../../components/ui';
 import { createStoryStyles } from './create-story-styles';
 import { InputField, MultiLineInputField } from '../../../components/form-fields';
+import AddMedia from './add-media';
+import AddAttachments from './add-attachments';
 
 const { height } = Dimensions.get('window');
 
@@ -109,9 +109,8 @@ const CreateStoryScreen = ({ navigation }) => {
 function FormField() {
     return (
         <ScrollView style={createStoryStyles.topView}>
-            <Text style={createStoryStyles.heading}>Select Media</Text>
-            <Text style={createStoryStyles.subHeading}>0 Photos | 0 Video</Text>
-            <MediaPicker />
+            <AddMedia />
+            <AddAttachments />
             <Text style={createStoryStyles.heading}>Story Details</Text>
             <Text style={createStoryStyles.subHeading}>Fill all mandatory fields</Text>
 
@@ -132,52 +131,5 @@ function FormField() {
         </ScrollView>
     );
 }
-
-const MediaPicker = () => {
-    const [selectedMedia, setSelectedMedia] = useState(null);
-
-    const pickMedia = () => {
-        let options = {
-            mediaType: 'mixed', // 'photo' | 'video' | 'mixed'
-            quality: 1,
-            selectionLimit: 1,
-        };
-
-        launchImageLibrary(options, (response) => {
-            console.log({ response });
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error:', response.error);
-            } else {
-                const media = response.assets[0]; // Get first selected media
-                setSelectedMedia(media);
-            }
-        });
-    };
-    console.log({ selectedMedia });
-
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <TouchableOpacity onPress={pickMedia} style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5 }}>
-                <Text style={{ color: 'white', fontSize: 16 }}>Select Photo / Video</Text>
-            </TouchableOpacity>
-
-            {selectedMedia && (
-                <View style={{ marginTop: 20 }}>
-                    {selectedMedia.type.startsWith('image') ? (
-                        <Image source={{ uri: selectedMedia.uri }} style={{ width: 300, height: 300, borderRadius: 10 }} />
-                    ) : (
-                        <Video
-                            source={{ uri: selectedMedia.uri }}
-                            style={{ width: 300, height: 300 }}
-                            controls
-                        />
-                    )}
-                </View>
-            )}
-        </View>
-    );
-};
 
 export default CreateStoryScreen;
