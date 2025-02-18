@@ -44,7 +44,7 @@ const AddAttachments = () => {
                     </Text>
                 </View>
                 <TouchableOpacity onPress={pickDocument} style={mediaStyles.mediaBtn}>
-                    <Text style={mediaStyles.mediaBtnTxt}>Add New</Text>
+                    <Text style={mediaStyles.mediaBtnTxt}>Choose</Text>
                 </TouchableOpacity>
             </View>
             <ScrollView style={[mediaStyles.mediaContainer]}>

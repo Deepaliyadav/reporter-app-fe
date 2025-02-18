@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+const { width, height } = Dimensions.get("window");
 
 export const createStoryStyles = StyleSheet.create({
     headerContainer: {
@@ -94,12 +95,15 @@ export const mediaStyles = StyleSheet.create({
     mediaItem: {
         position: 'relative',
         marginRight: 10,
-        paddingBottom: 10,
+        paddingBottom: 10
     },
     mediaThumbnail: {
         width: 100,
         height: 100,
         borderRadius: 10,
+    //     width: "100%",
+    // height: 200,
+    // borderRadius: 10,
     },
     deleteBtn: {
         position: 'absolute',
@@ -128,6 +132,57 @@ export const mediaStyles = StyleSheet.create({
     attachItemLeft: {
         flexDirection: 'row', alignItems: 'center',
         gap: 5
-    }
+    },
+    overlay: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "rgba(0,0,0,0.4)", // Dark overlay
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 15,   
+        height: 100
+        // borderWidth: 1
+      },
+      playButton: {
+        color: "rgba(255,255,255,0.7)",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+      playText: {
+        fontSize: 30,
+        color: "black",
+      },
+      deleteButton: {
+        position: "absolute",
+        top: 4,
+        right: 4,
+        backgroundColor: "rgba(0,0,0,0.8)",
+        width: 20,
+        height: 20,
+        borderRadius: 15,
+        justifyContent: "center",
+        alignItems: "center",
+      },
 });
+
+export const modalStyles = StyleSheet.create({
+    modalContainer: {
+        flex: 1, justifyContent: "center", backgroundColor: "rgba(0,0,0,0.8)", height
+    },
+    modalTop: {
+        height: height - 100,
+        justifyContent: 'center'
+    },
+    closebtn: {
+        height: 100
+    },
+    previwImage: {
+        resizeMode: 'contain',
+        width,
+        height
+      }
+})
 

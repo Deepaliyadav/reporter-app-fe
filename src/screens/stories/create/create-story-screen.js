@@ -8,6 +8,7 @@ import { createStoryStyles } from './create-story-styles';
 import { InputField, MultiLineInputField } from '../../../components/form-fields';
 import AddMedia from './add-media';
 import AddAttachments from './add-attachments';
+import FetchLocation from './fetch-location';
 
 const { height } = Dimensions.get('window');
 
@@ -21,25 +22,26 @@ const CreateStoryScreen = ({ navigation }) => {
     }
 
     const sendOtp = async (values) => {
-        let data = {
-            channel: 'beans',
-            phone: values.mobile,
-            cus_id: 1234,
-        };
-        const response = await fetch('https://k19w0lom7j.execute-api.ap-south-1.amazonaws.com/dev/otp/send-otp', {
+        console.log({ values })
+        const data = {
+            ...values,
+            createdBy: { name: 'Deepali', mobile: '8700242851' }
+        }
+        const response = await fetch('http://192.0.0.2:8000/api/punch/story', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
           });
           const result = await response.json();
+          console.log({ result })
         return result;
     };
 
     const mutation = useMutation({
         mutationFn: sendOtp,
         onSuccess: async (userData) => {
-            if (userData?.status) {
-                navigation.replace('OTP');
+            if (userData?.success) {
+                navigation.replace('StoriesList');
             }
         },
         onError: (error) => {
@@ -70,10 +72,10 @@ const CreateStoryScreen = ({ navigation }) => {
                 <Form
                     onSubmit={(values) => mutation.mutate(values)}
                     validate={validate}
-                    render={({ handleSubmit }) => (
+                    render={({ handleSubmit, form, values }) => (
                         <View style={createStoryStyles.formContainer}>
                             {/* <Field name="mobile" component={Nu÷.mberInputField} placeholder="Phone number" /> */}
-                            <FormField />
+                            <FormField form={form} />
                             <View style={createStoryStyles.buttonView}>
                                 <TouchableOpacity
                                     style={{ ...createStoryStyles.button, ...createStoryStyles.draftBtn }}
@@ -89,7 +91,7 @@ const CreateStoryScreen = ({ navigation }) => {
                                 <TouchableOpacity
                                     style={createStoryStyles.button}
                                     disabled={mutation.isLoading}
-                                    onPress={handleSubmit}
+                                    onPress={() => mutation.mutate({ ...values, status: 'SUCCESS' })}
                                 >
                                     {mutation.isPending ? (
                                         <ActivityIndicator size="small" color="#fff" />
@@ -106,11 +108,12 @@ const CreateStoryScreen = ({ navigation }) => {
     );
 };
 
-function FormField() {
+function FormField({ form }) {
     return (
         <ScrollView style={createStoryStyles.topView}>
             <AddMedia />
             <AddAttachments />
+            <FetchLocation form={form} />
             <Text style={createStoryStyles.heading}>Story Details</Text>
             <Text style={createStoryStyles.subHeading}>Fill all mandatory fields</Text>
 

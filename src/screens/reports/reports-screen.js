@@ -1,10 +1,22 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 
-const ReportsScreen = () => {
+const ReportsScreen = ({ navigation }) => {
+
+  const onLogout = async () => {
+    await AsyncStorage.removeItem('user');
+    setTimeout(() => {
+        navigation.replace('Auth');
+    }, 100);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Reports Section</Text>
+      <View>
+          <Button title="Logout" onPress={onLogout} />
+        </View>
     </View>
   );
 };

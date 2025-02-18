@@ -51,6 +51,10 @@
 	<string>We need access to your photos</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need access to your location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need access to your location</string>
 	<false/>
 </dict>
 </plist>

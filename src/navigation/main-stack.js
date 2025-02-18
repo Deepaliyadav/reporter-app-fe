@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import { Ionicons } from 'react-native-vector-icons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ProfileScreen, ReportsScreen, StoriesScreen } from '../screens';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
@@ -19,14 +19,23 @@ function TabLayout() {
     <Tab.Screen
       name="Home"
       component={StoriesScreen}
+      options={{
+        tabBarIcon: ({ color, size }) => <Icon name="file-document-outline" size={size} color={color} />,
+      }}
     />
     <Tab.Screen
-      name="Reports"
+      name="Search"
       component={ReportsScreen}
+      options={{
+        tabBarIcon: ({ color, size }) => <Icon name="magnify" size={size} color={color} />,
+      }}
     />
     <Tab.Screen
       name="Profile"
       component={ProfileScreen}
+      options={{
+        tabBarIcon: ({ color, size }) => <Icon name="account" size={size} color={color} />,
+      }}
     />
   </Tab.Navigator>
   );
