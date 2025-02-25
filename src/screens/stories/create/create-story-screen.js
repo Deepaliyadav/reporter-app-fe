@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ActivityIndicator, Alert, Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Field, Form } from 'react-final-form';
 import { useMutation } from '@tanstack/react-query';
@@ -21,19 +21,27 @@ const CreateStoryScreen = ({ navigation }) => {
         );
     }
 
+    const initialValues = useMemo(() => {
+        return {
+            images: [],
+            videos: [],
+            attachments: []
+        }
+    }, []);
+
     const sendOtp = async (values) => {
-        console.log({ values })
         const data = {
             ...values,
             createdBy: { name: 'Deepali', mobile: '8700242851' }
         }
-        const response = await fetch('http://192.0.0.2:8000/api/punch/story', {
+        console.log({ data })
+
+        const response = await fetch('http://65.2.116.173:8080/api/punch/story', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
           });
           const result = await response.json();
-          console.log({ result })
         return result;
     };
 
@@ -49,7 +57,6 @@ const CreateStoryScreen = ({ navigation }) => {
             Alert.alert('Login Failed', error.response?.data?.message || 'Something went wrong');
         },
     });
-    console.log(mutation.isLoading, { mutation });
 
     const validate = values => {
         const errors = {};
@@ -63,19 +70,20 @@ const CreateStoryScreen = ({ navigation }) => {
     };
 
     return (
-        <View>
+        <View style={createStoryStyles.outerView}>
             <GoBackHeader
                 navigation={navigation}
                 children={buildChildren()}
             />
-            <View style={{ ...createStoryStyles.mainContainer, height: height - 100 }}>
+            <View style={createStoryStyles.mainContainer}>
                 <Form
                     onSubmit={(values) => mutation.mutate(values)}
                     validate={validate}
+                    initialValues={initialValues}
                     render={({ handleSubmit, form, values }) => (
                         <View style={createStoryStyles.formContainer}>
-                            {/* <Field name="mobile" component={Nu÷.mberInputField} placeholder="Phone number" /> */}
-                            <FormField form={form} />
+                            {/* {console.log({ values })} */}
+                            <FormField form={form} values={values} />
                             <View style={createStoryStyles.buttonView}>
                                 <TouchableOpacity
                                     style={{ ...createStoryStyles.button, ...createStoryStyles.draftBtn }}
@@ -90,13 +98,13 @@ const CreateStoryScreen = ({ navigation }) => {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={createStoryStyles.button}
-                                    disabled={mutation.isLoading}
+                                    disabled={false}
                                     onPress={() => mutation.mutate({ ...values, status: 'SUCCESS' })}
                                 >
                                     {mutation.isPending ? (
                                         <ActivityIndicator size="small" color="#fff" />
                                     ) : (
-                                        <Text style={createStoryStyles.buttonText}>Create</Text>
+                                        <Text style={createStoryStyles.buttonText}>Submit</Text>
                                     )}
                                 </TouchableOpacity>
                             </View>
@@ -108,11 +116,11 @@ const CreateStoryScreen = ({ navigation }) => {
     );
 };
 
-function FormField({ form }) {
+function FormField({ form, values }) {
     return (
         <ScrollView style={createStoryStyles.topView}>
-            <AddMedia />
-            <AddAttachments />
+            <AddMedia form={form} values={values} />
+            <AddAttachments form={form} values={values} />
             <FetchLocation form={form} />
             <Text style={createStoryStyles.heading}>Story Details</Text>
             <Text style={createStoryStyles.subHeading}>Fill all mandatory fields</Text>

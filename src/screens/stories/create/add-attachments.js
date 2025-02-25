@@ -5,14 +5,19 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { createStoryStyles, mediaStyles } from './create-story-styles';
 import { viewDocument } from '@react-native-documents/viewer';
+import { uploadFile } from '../../../utils/upload-util';
 
-const AddAttachments = () => {
+const AddAttachments = ({ form }) => {
     const [attachments, setAttachments] = useState([]);
 
     const pickDocument = async () => {
         try {
             const [pickResult] = await pick();
-            setAttachments([...attachments, pickResult]);
+            const url = await uploadFile(pickResult)
+            let d = [...attachments, { ...pickResult, uri: url }];
+            setAttachments(d);
+            form.change('attachments', d);
+            console.log({ url });
             // const [pickResult] = await pick({mode:'import'}) // equivalent
             // do something with the picked file
           } catch (err) {
@@ -21,9 +26,12 @@ const AddAttachments = () => {
           }
     };
 
-    console.log({ attachments });
     const removeAttachment = (uri) => {
-        setAttachments((prev) => prev.filter((file) => file.uri !== uri));
+        setAttachments((prev) => {
+            let d = prev.filter((file) => file.uri !== uri);
+            form.change('attachments', d);
+            return d;
+        });
     };
 
     const viewDoc = (uri) => {

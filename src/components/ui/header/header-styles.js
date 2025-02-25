@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+const { height } = Dimensions.get("window");
 
 export const commonHeaderStyles = StyleSheet.create({
     container: {
@@ -20,7 +21,7 @@ export const goBackHeaderStyles = StyleSheet.create({
     container: {
         borderBottomWidth: 1,
         borderColor: 'grey',
-        height: 45,
+        height: height * 0.05,
         justifyContent: 'space-between',
         flexDirection: 'row',
         paddingHorizontal: 14,

@@ -2,136 +2,146 @@ import { Dimensions, StyleSheet } from 'react-native';
 const { width, height } = Dimensions.get("window");
 
 export const createStoryStyles = StyleSheet.create({
+    outerView: {
+        // backgroundColor: 'lightgreen',
+        // borderWidth: 1,
+        height
+    },
     headerContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
     },
     headertext: {
         color: '#000',
-        fontSize: 17,
+        fontSize: width * 0.040,
         fontWeight: 'bold',
     },
     mainContainer: {
-        padding: 10,
+        paddingVertical: width * 0.03,
+        height: height - (height * 0.1),
+        // backgroundColor: 'pink'
     },
     formContainer: {
         flex: 1,
+        // backgroundColor: 'yellow'
     },
     topView: {
+        paddingHorizontal: width * 0.03
     },
     buttonView: {
         flexDirection: 'row',
         gap: 10,
         justifyContent: 'center',
+        gap: width * 0.03,
+        paddingTop: width * 0.03,
+        // backgroundColor: 'white'
     },
     button: {
-        marginTop: 20,
-        paddingHorizontal: 12,
+        paddingHorizontal: width * 0.03,
         backgroundColor: '#007bff',
-        borderRadius: 4,
+        borderRadius: width * 0.01,
         alignItems: 'center',
         justifyContent: 'center',
-        height: 40,
-        width: 180,
+        height: height * 0.05,
+        minWidth: width * 0.45,
     },
     draftBtn: {
         backgroundColor: 'grey',
     },
     buttonText: {
         color: '#fff',
-        fontSize: 16,
+        fontSize: width * 0.038,
     },
     label: {
-        marginBottom: 5,
+        marginBottom: height * 0.005,
         color: '#000',
         opacity: 0.7,
     },
     heading: {
         color: '#000',
         fontWeight: 'bold',
-        fontSize: 16,
-        marginBottom: 4,
+        fontSize: width * 0.040,
+        marginBottom: height * 0.005,
     },
     subHeading: {
         color: '#000',
         opacity: 0.7,
-        marginBottom: 10,
+        marginBottom: height * 0.005,
     },
 });
 
 export const mediaStyles = StyleSheet.create({
     container: {
         // borderWidth: 1
+        // paddingBottom: height * 0.02,
     },
     headerView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 5
+        marginBottom: height * 0.005,
     },
     leftHeaderAttach: {
         backgroundColor: '#fff',
-        paddingVertical: 6,
-        paddingHorizontal: 10,
-        borderRadius: 5,
+        paddingHorizontal: width * 0.04,
+        paddingVertical: height * 0.007,
+        borderRadius: width * 0.015,
         flex: 1,
-        marginRight: 10
+        marginRight: width * 0.025
     },
     mediaBtn: {
-        paddingHorizontal: 15,
-        paddingVertical: 5,
+        paddingHorizontal: width * 0.04,
+        paddingVertical: height * 0.007,
         backgroundColor: '#007bff',
-        borderRadius: 4,
+        borderRadius: width * 0.015,
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'row',
+        gap: 3
     },
     mediaBtnTxt: {
         color: '#fff',
-        fontSize: 15,
+        fontSize: width * 0.032,
     },
     mediaContainer: {
-        marginBottom: 10
+        marginBottom: height * 0.01
+    },
+    loadImages: {
+        width: width * 0.18,
+        height: width * 0.18,
+        borderRadius: width * 0.015,
+        backgroundColor: "rgba(0,0,0,0.4)",
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 5
+    },
+    loadTxt: {
+        fontSize: width * 0.025,
+        textAlign: 'center',
+        color: global.colors.error
     },
     mediaItem: {
         position: 'relative',
-        marginRight: 10,
-        paddingBottom: 10
+        marginRight: width * 0.025,
+        paddingBottom: height * 0.015,
     },
     mediaThumbnail: {
-        width: 100,
-        height: 100,
-        borderRadius: 10,
-    //     width: "100%",
-    // height: 200,
-    // borderRadius: 10,
-    },
-    deleteBtn: {
-        position: 'absolute',
-        top: 5,
-        right: 5,
-        backgroundColor: 'red',
-        borderRadius: 15,
-        width: 20,
-        height: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    deleteBtnText: {
-        color: '#fff',
-        fontSize: 12,
-        fontWeight: 'bold',
+        width: width * 0.18,
+        height: width * 0.18,
+        borderRadius: width * 0.015,
     },
     attachItem: {
-        flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginVertical: 5,
+        flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+        marginVertical: width * 0.01,
         borderWidth: 1,
         borderColor: 'grey',
-        paddingVertical: 5,
-        paddingHorizontal: 6,
-        borderRadius: 4
+        paddingVertical: width * 0.01,
+        paddingHorizontal: width * 0.011,
+        borderRadius: width * 0.01
     },
     attachItemLeft: {
         flexDirection: 'row', alignItems: 'center',
-        gap: 5
+        gap: width * 0.01
     },
     overlay: {
         position: "absolute",
@@ -142,8 +152,8 @@ export const mediaStyles = StyleSheet.create({
         backgroundColor: "rgba(0,0,0,0.4)", // Dark overlay
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 15,   
-        height: 100
+        borderRadius: width * 0.015,
+        height: width * 0.18,
         // borderWidth: 1
       },
       playButton: {
@@ -151,18 +161,15 @@ export const mediaStyles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
       },
-      playText: {
-        fontSize: 30,
-        color: "black",
-      },
       deleteButton: {
         position: "absolute",
-        top: 4,
-        right: 4,
+        top: width * 0.005,
+        right: width * 0.005,
         backgroundColor: "rgba(0,0,0,0.8)",
-        width: 20,
-        height: 20,
-        borderRadius: 15,
+        width: width * 0.04,
+        height: width * 0.04,
+        borderRadius: width * 0.025,
+        flexDirection: 'row',
         justifyContent: "center",
         alignItems: "center",
       },
@@ -170,19 +177,49 @@ export const mediaStyles = StyleSheet.create({
 
 export const modalStyles = StyleSheet.create({
     modalContainer: {
-        flex: 1, justifyContent: "center", backgroundColor: "rgba(0,0,0,0.8)", height
+        flex: 1, backgroundColor: "#fff", height
     },
     modalTop: {
-        height: height - 100,
-        justifyContent: 'center'
+        height: height * 0.05,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: height * 0.01,
+        paddingHorizontal: height * 0.01,
+        borderColor: '#D5D5D5',
+        borderBottomWidth: 1,
     },
-    closebtn: {
-        height: 100
+    flex: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: height * 0.01,
+    },
+    circle: {
+        width: height * 0.022,
+        height: height * 0.022,
+        borderWidth: 1,
+        borderRadius: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#D5D5D5',
+        backgroundColor: '#F3F3F3'
+    },
+    imageName: {
+        color: '#000',
+        fontWeight: 500
+    },
+    modalMain: {
+        height: height * 0.9,
+        justifyContent: 'center',
+        // backgroundColor: 'pink',
+        paddingHorizontal: height * 0.01
     },
     previwImage: {
         resizeMode: 'contain',
-        width,
-        height
-      }
+        width: width - (height * 0.02),
+        height: height * 0.9,
+        borderRadius: 4,
+        // borderWidth: 1
+    }
 })
 

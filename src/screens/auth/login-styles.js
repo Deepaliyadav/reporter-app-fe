@@ -42,7 +42,7 @@ export const loginStyles = StyleSheet.create({
     },
 
     loginInput: {
-        height: height * 0.05, // 8% of screen height
+        height: height * 0.08, // 8% of screen height
         borderWidth: 1,
         paddingHorizontal: 20,
         borderRadius: 100,
